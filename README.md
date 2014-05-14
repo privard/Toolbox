@@ -36,14 +36,26 @@ sudo npm install
 ##### Exemples 
 
 Compress Images : 
-* grunt compress-images --sourceFile=working/image/large_1.png --destinationFolder=working/image_comp/
+```sh
+grunt compress-images --sourceFile=working/image/large_1.png --destinationFolder=working/image_comp/
+```
 
 For multiple Images : 
-* grunt compress-images --sourceFile=working/image/*.png --destinationFolder=working/image_comp/
+```sh
+grunt compress-images --sourceFile=working/image/*.png --destinationFolder=working/image_comp/
+```
 
 Concat and Compress Javascript : 
 (You must also add the files to be compressed within the GruntFile.js)
-* grunt watch --sourceFolderPath=working/js/ --desnationFolder=working/js_concat/
+```sh
+grunt compress-javascript --sourceFolderPath=working/js/ --desnationFolder=working/js_concat/
+```
+
+Watch for Javascript Changes and Concat and Compress Javascript : 
+(You must also add the files to be compressed within the GruntFile.js)
+```sh
+grunt watch --sourceFolderPath=working/js/ --desnationFolder=working/js_concat/
+```
 
 
 License

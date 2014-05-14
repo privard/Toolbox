@@ -5,4 +5,4 @@ before_install:
   - npm install grunt-cli -g
 script:
   - grunt compress-images --sourceFile=working/image/large_1.png --destinationFolder=working/image_comp/
-  - grunt watch --sourceFolderPath=working/js/ --desnationFolder=working/js_concat/
+  - grunt compress-javascript --sourceFolderPath=working/js/ --desnationFolder=working/js_concat/
