@@ -32,7 +32,7 @@ grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/;
 
 ##### Exemples 
 
-* grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/;
+* grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/
 
 License
 ----
