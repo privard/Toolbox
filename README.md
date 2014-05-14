@@ -6,30 +6,30 @@ Toolbox, includes css and javascript minification/concat and also image compress
 
 Version
 ----
-1.0
+0.94
 
 Dependencies
 -----------
 
 ```sh
-		"dependencies": {
-			"grunt-cli": "~0.1.9",
-			"grunt-contrib-copy":"*",
-			"grunt-init": "~0.2.1",
-			"grunt": "~0.4.1",
-			"grunt-contrib-imagemin": "~0.3.0",
-			"grunt-contrib-concat":"*",
-			"grunt-contrib-watch":"*",
-			"grunt-contrib-uglify":"*"
-		}
+	"dependencies": {
+	"grunt-cli": "~0.1.9",
+	"grunt-contrib-copy":"*",
+	"grunt-init": "~0.2.1",
+	"grunt": "~0.4.1",
+	"grunt-contrib-imagemin": "~0.3.0",
+	"grunt-contrib-concat":"*",
+	"grunt-contrib-watch":"*",
+	"grunt-contrib-uglify":"*"
+}
 ```
 
 Installation
 --------------
 
 ```sh
-git clone [git-repo-url] ImageCruncher
-cd ImageCruncher
+git clone [git-repo-url] Toolbox
+cd Toolbox
 sudo npm install
 ```
 
