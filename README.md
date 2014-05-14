@@ -1,5 +1,6 @@
 Toolbox
 =========
+[![Build Status](https://travis-ci.org/davelamarre/Toolbox.svg?branch=master)](https://travis-ci.org/davelamarre/Toolbox)
 
 Toolbox, includes css and javascript minification/concat and also image compression
 
