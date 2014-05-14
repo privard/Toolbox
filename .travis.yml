@@ -5,3 +5,4 @@ before_install:
   - npm install grunt-cli -g
 script:
   - grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/
+  - grunt watch

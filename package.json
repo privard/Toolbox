@@ -1,17 +1,20 @@
 {
-  "name": "ImageCruncher",
-  "description": "This beautifull app will compress all the images in the found folders",
-  "version": "2.0.0",
-  "private": true,
-  "scripts": {
-    "preload": "sudo npm install grunt-cli -g"
-    },
-    "dependencies": {
-      "grunt-cli": "~0.1.9",
-      "grunt-contrib-copy":"*",
-      "grunt-init": "~0.2.1",
-      "grunt": "~0.4.1",
-      "grunt-contrib-imagemin": "~0.3.0"
-    }
-  }
+	"name": "Toolbox",
+	"description": "This beautifull app will compress all the images in the found folders, and can also concatenate and uglify Javascript and Css",
+	"version": "2.0.0",
+	"private": true,
+	"scripts": {
+		"preload": "sudo npm install grunt-cli -g"
+		},
+		"dependencies": {
+			"grunt-cli": "~0.1.9",
+			"grunt-contrib-copy":"*",
+			"grunt-init": "~0.2.1",
+			"grunt": "~0.4.1",
+			"grunt-contrib-imagemin": "~0.3.0",
+			"grunt-contrib-concat":"*",
+			"grunt-contrib-watch":"*",
+			"grunt-contrib-uglify":"*"
+		}
+	}
 

@@ -28,12 +28,17 @@ Installation
 git clone [git-repo-url] ImageCruncher
 cd ImageCruncher
 sudo npm install
-grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/;
 ```
 
 ##### Exemples 
 
-* grunt --sourceFile=image/large.jpg --destinationFolder=image_comp/
+Compress Images : 
+* grunt --sourceFile=working/image/large.jpg --destinationFolder=working/image_comp/
+
+For multiple Images : 
+* grunt --sourceFile=working/image/*.jpg --destinationFolder=working/image_comp/
+
+Concat and Compress Javascript : 
 
 License
 ----
