@@ -37,12 +37,12 @@ sudo npm install
 
 Compress Images : 
 ```sh
-grunt compress-images --sourceFile=working/image/large_1.png --destinationFolder=working/image_comp/
+grunt compress-images --sourceFile=working/image/large_1.png --destinationFile=working/image_comp/large_1.png
 ```
 
 For multiple Images : 
 ```sh
-grunt compress-images --sourceFile=working/image/*.png --destinationFolder=working/image_comp/
+grunt compress-images --sourceFile=working/image/*.png --destinationFile=working/image_comp/
 ```
 
 Concat and Compress Javascript : 

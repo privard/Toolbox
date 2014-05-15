@@ -12,11 +12,17 @@ module.exports = function(grunt) {
 	sourceFolderPath = sourceFolderPath.substr(0, sourceFolderPath.lastIndexOf("/"));
 	sourceFolderPath =  sourceFolderPath;
 	var sourceFileName =  sourceFile.split('/').pop();
-	var destinationFolder = grunt.option('destinationFolder') || '';
+	var destinationFile = grunt.option('destinationFile') || '';
+
+
+	
 	var quality = grunt.option('quality') || '8';
 	var extensionJPG = grunt.option('extensionJPG') || '.jpg';
 	var extensionPNG = grunt.option('extensionPNG') || '.png';
+
 	var detectedFileType = ".jpg"
+
+	var destinationFolder = grunt.option('destinationFolder') || '';
 
 	if(sourceFile.indexOf(".jpg") > 0){
 		detectedFileType= "jpg";
@@ -29,7 +35,13 @@ module.exports = function(grunt) {
 	if(detectedFileType == "jpg"){
 		console.log("= JPG Compression Command Detected");
 		console.log("--sourceFile : " + sourceFile);
-		console.log("--destinationFolder : " + destinationFolder);
+
+
+	destinationFile = destinationFile.substr(0, destinationFile.lastIndexOf("/"));
+
+
+
+		console.log("--destinationFile : " + destinationFile);
 
 		console.log("--quality : " + quality);
 
@@ -50,8 +62,7 @@ module.exports = function(grunt) {
 						expand: true,
 						cwd: sourceFolderPath,
 						src: sourceFileName,
-						dest: destinationFolder,
-						ext: extensionJPG
+						dest: destinationFile
 					}
 					]
 				}
@@ -60,7 +71,9 @@ module.exports = function(grunt) {
 	}else if(detectedFileType == "png"){
 		console.log("= PNG Compression Command Detected");
 		console.log("--sourceFile : " + sourceFile);
-		console.log("--destinationFolder : " + destinationFolder);
+
+		destinationFile = destinationFile.substr(0, destinationFile.lastIndexOf("/"));
+		console.log("--destinationFile : " + destinationFile);
 
 		console.log("--quality : " + quality);
 
@@ -81,8 +94,7 @@ module.exports = function(grunt) {
 						expand: true,
 						cwd: sourceFolderPath,
 						src: sourceFileName,
-						dest: destinationFolder,
-						ext: extensionPNG
+						dest: destinationFile
 					}
 					]
 				}
