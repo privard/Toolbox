@@ -3,41 +3,17 @@ module.exports = function(grunt) {
   var Toolbox = {};
 
   Toolbox.config = {
-    debug:      grunt.option("debug")   || null,
-    src:        grunt.option("src")     || "src/",
-    dest:       grunt.option("dest")    || "dist/",
-    backup:     grunt.option("backup")  || "backup/",
-    temp:       grunt.option("temp")    || "temp/",
-    imgSrc:     grunt.option("imgSrc")  || "src/img/",
-    imgDest:    grunt.option("imgDest") || "dist/img/",
-    imgBackup:  grunt.option("imgBackup") || "backup/img/",
-    jsBackup:   grunt.option("jsBackup") || "backup/js/",
-    jsSrc:      grunt.option("jsSrc")   || "src/js/",
-    jsDest:     grunt.option("jsDest")  || "dist/js/",
+    src:        grunt.option("src")     || null,
+    dest:       grunt.option("dest")    || null,
   };
-
-  Toolbox.jsSrcPath   = function(){return Toolbox.config.jsSrc};
-  Toolbox.jsDestPath  = function(){return Toolbox.config.jsDest};
-  Toolbox.imgSrcPath  = function(){return Toolbox.config.imgSrc};
-  Toolbox.imgDestPath = function(){return Toolbox.config.imgDest};
-  Toolbox.imgBckPath  = function(){return Toolbox.config.imgBackup};
-  Toolbox.BckPath     = function(){return Toolbox.config.backup};
-
-  if(Toolbox.config.debug){
-    console.log("Src : " + Toolbox.config.src);
-    console.log("Dest : " + Toolbox.config.dest);
-    console.log("imgSrc : " + Toolbox.config.imgSrc);
-    console.log("imgDest : " + Toolbox.config.imgDest);
-    console.log("jsSrc : " + Toolbox.config.jsSrc);
-    console.log("jsDest : " + Toolbox.config.jsDest);
-  }
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     imagemin: {
-      dynamic: {
+
+      inplace: {
         options: {
           optimizationLevel: 7,
           progressive: true,
@@ -45,101 +21,75 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,   
-          cwd: "src/img/",
+          cwd: Toolbox.config.src,
           src: ['**/*.{png,jpg,gif,jpeg}'],      
-          dest: "src/img/",  
+          dest: Toolbox.config.src,  
+        }]
+      },
+
+      default: {
+        options: {
+          optimizationLevel: 7,
+          progressive: true,
+          interlaced: true
+        },
+        files: [{
+          expand: true,   
+          cwd: Toolbox.config.src,
+          src: ['**/*.{png,jpg,gif,jpeg}'],      
+          dest: Toolbox.config.dest,  
         }]
       }
-    }, 
 
-    copy: {
-      images: {
-        files: [
-          {
-            expand: true, 
-            cwd: "src/img/",
-            src: ["**"], 
-            dest: "dist/img/"
-          }
-        ]
-      },
-      backupimages: {
-        files: [
-          {
-            expand: true,
-            cwd: "src/img/",
-            src: ["**"],
-            dest: "backup/img/"
-          }
-        ]
-      },
-      compressedImages: {
-        files: [
-          {
-            expand: true,
-            cwd: "dist/img/",
-            src: ["**"],
-            dest: "src/img/"
-          }
-        ]
-      }
-    },
-
-    // CLEAN
-    clean: {
-      images: ["dist/img/"],
-      js: [Toolbox.jsDestPath()],
-      imgBackup: [Toolbox.imgBckPath()],
-      backup: [Toolbox.BckPath()],
     },
 
     // CONCAT JS
-    concat: {
+    // concat: {
+    //     options: {
+    //       separator: "\n", //add a new line after each file
+    //       banner: "", //added before everything
+    //       footer: "" //added after everything
+    //     },
+    //     dist: {
+    //       // the files to concatenate
+    //       src: [
+    //         //include libs
+    //         Toolbox.jsSrcPath() + 'jquery.colorbox-min.js',
+    //         Toolbox.jsSrcPath() + 'jquery.cycle.js',
+    //         ],
+    //       // the location of the resulting JS file
+    //       dest: Toolbox.jsDestPath() + 'scripts.js'
+    //     }
+    //   },
+
+    //   uglify: {
+    //     build: {
+    //       files: [{
+    //         expand: true,
+    //         cwd: Toolbox.jsDestPath(),
+    //         src: ['scripts.js'],
+    //         dest: Toolbox.jsDestPath(),
+    //         ext: '.js'
+    //       }]
+    //     }
+    //   },
+
+    watch: {
+      // scripts: {
+      //   files: [Toolbox.jsSrcPath() + '*.js'],
+      //   tasks: ['concat:dist', 'uglify'],
+      //   options: {
+      //     interrupt: true
+      //   }
+      // }, 
+      newimages: {
+        files: ["**/*.{png,jpg,jpeg,gif}"],
+        tasks: ['compress-images'],
         options: {
-          separator: "\n", //add a new line after each file
-          banner: "", //added before everything
-          footer: "" //added after everything
-        },
-        dist: {
-          // the files to concatenate
-          src: [
-            //include libs
-            Toolbox.jsSrcPath() + 'jquery.colorbox-min.js',
-            Toolbox.jsSrcPath() + 'jquery.cycle.js',
-            ],
-          // the location of the resulting JS file
-          dest: Toolbox.jsDestPath() + 'scripts.js'
-        }
-      },
-
-      uglify: {
-        build: {
-          files: [{
-            expand: true,
-            cwd: Toolbox.jsDestPath(),
-            src: ['scripts.js'],
-            dest: Toolbox.jsDestPath(),
-            ext: '.js'
-          }]
-        }
-      },
-
-      watch: {
-        scripts: {
-          files: [Toolbox.jsSrcPath() + '*.js'],
-          tasks: ['concat:dist', 'uglify'],
-          options: {
-            interrupt: true
-          }
-        }, 
-        newimages: {
-          files: ["**/*.{png,jpg,jpeg,gif}"],
-          tasks: ['compress-new-img'],
-          options: {
-            // cwd: Toolbox.imgSrcPath()
-          }
+          cwd: Toolbox.config.src
         }
       }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-imagemin');
@@ -150,48 +100,42 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-newer');
 
-  // Default task(s).
+  // Image related Tasks
+  grunt.registerTask('optimize', "Watches a folder and compresses images inside", function(){
+      var args = this.args;
+      if(args[0] === "images"){
+        grunt.task.run(['compress-images', 'watch:newimages']);
+      } else if (args[0] === undefined) {
+        grunt.task.run(['compress-images', 'watch:newimages']);
+      } else {
+        grunt.fatal("This task is not available. Please use `grunt help` for usage examples.");
+      }
+  }); 
 
+  grunt.registerTask('compress-images', "Compresses images inside a folder using imagemin", function(){
+      var src = Toolbox.config.src;
+      var dest = Toolbox.config.dest;
 
-  var compressImg = ['imagemin:dynamic'];
+      if(src && dest && (src !== dest)) {
+        grunt.log.writeln("Optimizing with different src and dest");
+        grunt.task.run(['newer:imagemin:default']);
+      } else if (src) {
+        grunt.log.writeln("Optimizing in place");
+        grunt.task.run(['newer:imagemin:inplace']);
+      } else {
+        grunt.fatal("Please specify a source and/or destination folder");
+      }
+  }); 
 
-  grunt.registerTask('default', ['compress-img', 'compress-js']);
-  // grunt.registerTask('compress-and-watch-new-img', ['compress-img', 'watch:newimages']);
-  grunt.registerTask('compress-and-watch-new-img', ['compress-new-img', 'watch:newimages']);
-  // grunt.registerTask('compress-new-img', ['newer:copy:backupimages', 'newer:imagemin:dynamic']);
+  grunt.registerTask('help', "Displays help and usage", function(){
+      grunt.log.writeln("\ngrunt optimize:images --src=/path/to/images/ [--dest=/path/to/destination/]\n");
+      grunt.log.writeln("Compresses images in `src` path and subsequently watches for new images, compressing them in turn. If a `dest` path is specified, optimize:images will send optimized images in destination folder. Otherwise, images will be optimized and overwritten in-place.");
+  }); 
 
-  // if(Toolbox.imgSrcPath() === Toolbox.imgDestPath()){
-  //   grunt.registerTask('compress-img', [
-  //     'clean:imgBackup',
-  //     'copy:backupimages',
-  //     'imagemin:dynamic'
-  //   ]);
-  // } else {
-  //   grunt.registerTask('compress-img', [
-  //     'clean:images', 
-  //     'clean:imgBackup', 
-  //     'copy:backupimages',
-  //     'copy:images', 
-  //     'imagemin:dynamic'
-  //   ]);
-  // }
-
-  grunt.registerTask('compress-img', [
-      // 'copy:backupimages',
-      // 'copy:images', 
-      'imagemin:dynamic',
-      // 'copy:compressedImages',
-      // 'clean:images'
-    ]);
-
-  grunt.registerTask('compress-new-img', [
-      // 'newer:copy:images', 
-      'newer:imagemin:dynamic',
-      // 'copy:compressedImages',
-      // 'clean:images'
-    ]);
-
-  grunt.registerTask('compress-js', ['clean:js','concat:dist', 'uglify:build']);
-  grunt.registerTask('cleanall', ['clean:images', 'clean:backup', 'clean:js']);
+  // Javascript related Tasks
+  // grunt.registerTask('compress-js', ['clean:js','concat:dist', 'uglify:build']);
+  
+  // Garbaging
+  // grunt.registerTask('cleanall', ['clean:images', 'clean:backup', 'clean:js']);
 
 };
