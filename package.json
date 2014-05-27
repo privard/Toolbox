@@ -11,10 +11,12 @@
 			"grunt-contrib-copy":"*",
 			"grunt-init": "~0.2.1",
 			"grunt": "~0.4.1",
-			"grunt-contrib-imagemin": "*",
+			// "grunt-contrib-imagemin": "*",
 			"grunt-contrib-concat":"*",
 			"grunt-contrib-watch":"*",
-			"grunt-contrib-uglify":"*"
+			"grunt-contrib-uglify":"*",
+			"grunt-contrib-clean":"*",
+			"grunt-newer":"*"
 		}
 	}
 

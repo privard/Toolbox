@@ -35,6 +35,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     imagemin: {
       dynamic: {
         options: {
@@ -44,20 +45,21 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,   
-          cwd: Toolbox.imgSrcPath(),
+          cwd: "src/img/",
           src: ['**/*.{png,jpg,gif,jpeg}'],      
-          dest: Toolbox.imgDestPath(),  
+          dest: "src/img/",  
         }]
       }
     }, 
+
     copy: {
       images: {
         files: [
           {
             expand: true, 
-            cwd: Toolbox.imgSrcPath(),
+            cwd: "src/img/",
             src: ["**"], 
-            dest: Toolbox.imgDestPath()
+            dest: "dist/img/"
           }
         ]
       },
@@ -65,19 +67,33 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: Toolbox.imgSrcPath(),
+            cwd: "src/img/",
             src: ["**"],
-            dest: Toolbox.imgBckPath()
+            dest: "backup/img/"
+          }
+        ]
+      },
+      compressedImages: {
+        files: [
+          {
+            expand: true,
+            cwd: "dist/img/",
+            src: ["**"],
+            dest: "src/img/"
           }
         ]
       }
     },
+
+    // CLEAN
     clean: {
-      images: [Toolbox.imgDestPath()],
+      images: ["dist/img/"],
       js: [Toolbox.jsDestPath()],
       imgBackup: [Toolbox.imgBckPath()],
       backup: [Toolbox.BckPath()],
     },
+
+    // CONCAT JS
     concat: {
         options: {
           separator: "\n", //add a new line after each file
@@ -95,6 +111,7 @@ module.exports = function(grunt) {
           dest: Toolbox.jsDestPath() + 'scripts.js'
         }
       },
+
       uglify: {
         build: {
           files: [{
@@ -106,6 +123,7 @@ module.exports = function(grunt) {
           }]
         }
       },
+
       watch: {
         scripts: {
           files: [Toolbox.jsSrcPath() + '*.js'],
@@ -118,7 +136,7 @@ module.exports = function(grunt) {
           files: ["**/*.{png,jpg,jpeg,gif}"],
           tasks: ['compress-new-img'],
           options: {
-            cwd: Toolbox.imgSrcPath()
+            // cwd: Toolbox.imgSrcPath()
           }
         }
       }
@@ -133,24 +151,46 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
 
   // Default task(s).
+
+
+  var compressImg = ['imagemin:dynamic'];
+
   grunt.registerTask('default', ['compress-img', 'compress-js']);
-  grunt.registerTask('compress-and-watch-new-img', ['compress-img', 'watch:newimages']);
-  grunt.registerTask('compress-new-img', ['newer:copy:backupimages', 'newer:imagemin:dynamic']);
-  if(Toolbox.imgSrcPath() === Toolbox.imgDestPath()){
-    grunt.registerTask('compress-img', [
-      'clean:imgBackup',
-      'copy:backupimages',
-      'imagemin:dynamic'
+  // grunt.registerTask('compress-and-watch-new-img', ['compress-img', 'watch:newimages']);
+  grunt.registerTask('compress-and-watch-new-img', ['compress-new-img', 'watch:newimages']);
+  // grunt.registerTask('compress-new-img', ['newer:copy:backupimages', 'newer:imagemin:dynamic']);
+
+  // if(Toolbox.imgSrcPath() === Toolbox.imgDestPath()){
+  //   grunt.registerTask('compress-img', [
+  //     'clean:imgBackup',
+  //     'copy:backupimages',
+  //     'imagemin:dynamic'
+  //   ]);
+  // } else {
+  //   grunt.registerTask('compress-img', [
+  //     'clean:images', 
+  //     'clean:imgBackup', 
+  //     'copy:backupimages',
+  //     'copy:images', 
+  //     'imagemin:dynamic'
+  //   ]);
+  // }
+
+  grunt.registerTask('compress-img', [
+      // 'copy:backupimages',
+      // 'copy:images', 
+      'imagemin:dynamic',
+      // 'copy:compressedImages',
+      // 'clean:images'
     ]);
-  } else {
-    grunt.registerTask('compress-img', [
-      'clean:images', 
-      'clean:imgBackup', 
-      'copy:backupimages',
-      'copy:images', 
-      'imagemin:dynamic'
+
+  grunt.registerTask('compress-new-img', [
+      // 'newer:copy:images', 
+      'newer:imagemin:dynamic',
+      // 'copy:compressedImages',
+      // 'clean:images'
     ]);
-  }
+
   grunt.registerTask('compress-js', ['clean:js','concat:dist', 'uglify:build']);
   grunt.registerTask('cleanall', ['clean:images', 'clean:backup', 'clean:js']);
 
