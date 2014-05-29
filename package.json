@@ -15,7 +15,8 @@
 			"grunt-contrib-watch":"*",
 			"grunt-contrib-uglify":"*",
 			"grunt-contrib-clean":"*",
-			"grunt-newer":"*"
+			"grunt-newer":"*",
+			"grunt-contrib-imagemin":"*"
 		}
 	}
 
