@@ -27,6 +27,24 @@ module.exports = function(grunt) {
         }]
       },
 
+      staticinplace: {
+        options: {
+          optimizationLevel: 7,
+          progressive: true,
+          interlaced: true
+        },
+        files: {}
+      },
+
+      static: {
+        options: {
+          optimizationLevel: 7,
+          progressive: true,
+          interlaced: true
+        },
+        files: {}
+      },
+
       default: {
         options: {
           optimizationLevel: 7,
@@ -124,6 +142,10 @@ module.exports = function(grunt) {
           grunt.task.run(['compress-images']);
         }
 
+      } else if (args[0] === "image"){
+
+          grunt.task.run(['compress-image']);
+
       } else if (args[0] === "watch"){
         
         if(!Toolbox.config.src)     grunt.fatal("Please specify a folder to watch with --src argument");
@@ -151,6 +173,33 @@ module.exports = function(grunt) {
 
         if(isNew) grunt.task.run(['newer:imagemin:inplace']);
         else      grunt.task.run(['imagemin:inplace']);
+
+      } else {
+        grunt.fatal("Please specify a source and/or destination folder");
+      }
+  }); 
+
+  grunt.registerTask('compress-image', "Compresses an image using imagemin", function(){
+      var src = Toolbox.config.src;
+      var dest = Toolbox.config.dest;
+
+      if(src && dest && (src !== dest)) {
+        grunt.log.writeln("Optimizing with different src and dest");
+
+        var staticfiles = {};
+        staticfiles[dest] = src;
+        grunt.config.set(['imagemin', 'static', 'files'], staticfiles);
+
+        grunt.task.run(['imagemin:static']);
+
+      } else if (src) {
+        grunt.log.writeln("Optimizing in place");
+
+        var staticfiles = {};
+        staticfiles[src] = src;
+        grunt.config.set(['imagemin', 'staticinplace', 'files'], staticfiles);
+
+        grunt.task.run(['imagemin:staticinplace']);
 
       } else {
         grunt.fatal("Please specify a source and/or destination folder");
