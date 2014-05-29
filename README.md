@@ -6,7 +6,7 @@ Toolbox, includes css and javascript minification/concat and also image compress
 
 Version
 ----
-1.0
+BETA 1.0
 
 Dependencies
 -----------

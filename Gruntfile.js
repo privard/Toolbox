@@ -84,7 +84,7 @@ module.exports = function(grunt) {
       // }, 
       newimages: {
         files: ["**/*.{png,jpg,jpeg,gif}"],
-        tasks: ['compress-images'],
+        tasks: ['compress-images:new'],
         options: {
           cwd: Toolbox.config.src
         }
@@ -101,10 +101,34 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
 
   // Image related Tasks
-  grunt.registerTask('optimize', "Watches a folder and compresses images inside", function(){
+  grunt.registerTask('compress', "Watches a folder and compresses images inside", function(){
       var args = this.args;
       if(args[0] === "images"){
-        grunt.task.run(['compress-images', 'watch:newimages']);
+
+        if (args[1] === "watch"){
+          // compress:images:watch
+          grunt.task.run(['compress-images', 'watch:newimages']); 
+
+        } else if (args[1] === "new"){
+
+          if (args[2] === "watch"){
+            // compress:images:new:watch
+            grunt.task.run(['compress-images:new', 'watch:newimages']);
+
+          } else {
+             // compress:images:new
+            grunt.task.run(['compress-images:new']);
+          }
+        } else { 
+          // compress:images
+          grunt.task.run(['compress-images']);
+        }
+
+      } else if (args[0] === "watch"){
+        
+        if(!Toolbox.config.src)     grunt.fatal("Please specify a folder to watch with --src argument");
+        else                        grunt.task.run(['watch:newimages']);
+
       } else if (args[0] === undefined) {
         grunt.task.run(['compress-images', 'watch:newimages']);
       } else {
@@ -112,23 +136,29 @@ module.exports = function(grunt) {
       }
   }); 
 
-  grunt.registerTask('compress-images', "Compresses images inside a folder using imagemin", function(){
+  grunt.registerTask('compress-images', "Compresses images inside a folder using imagemin", function(isNew){
       var src = Toolbox.config.src;
       var dest = Toolbox.config.dest;
 
       if(src && dest && (src !== dest)) {
         grunt.log.writeln("Optimizing with different src and dest");
-        grunt.task.run(['newer:imagemin:default']);
+
+        if(isNew) grunt.task.run(['newer:imagemin:default']);
+        else      grunt.task.run(['imagemin:default']);
+
       } else if (src) {
         grunt.log.writeln("Optimizing in place");
-        grunt.task.run(['newer:imagemin:inplace']);
+
+        if(isNew) grunt.task.run(['newer:imagemin:inplace']);
+        else      grunt.task.run(['imagemin:inplace']);
+
       } else {
         grunt.fatal("Please specify a source and/or destination folder");
       }
   }); 
 
   grunt.registerTask('help', "Displays help and usage", function(){
-      grunt.log.writeln("\ngrunt optimize:images --src=/path/to/images/ [--dest=/path/to/destination/]\n");
+      grunt.log.writeln("\ngrunt loptimize:images --src=/path/to/images/ [--dest=/path/to/destination/]\n");
       grunt.log.writeln("Compresses images in `src` path and subsequently watches for new images, compressing them in turn. If a `dest` path is specified, optimize:images will send optimized images in destination folder. Otherwise, images will be optimized and overwritten in-place.");
   }); 
 
